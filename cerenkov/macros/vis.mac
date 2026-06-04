@@ -1,0 +1,54 @@
+# Tạo cửa sổ OpenGL và cấu hình nền
+/vis/open OGL 600x600-0+0
+/vis/viewer/set/background 0.2 0.2 0.2
+
+# Tạm tắt auto-refresh trong lúc thiết lập scene
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+
+# Vẽ hình học
+/vis/drawVolume
+
+# Hiển thị dạng khung dây (wireframe) để nhìn xuyên thấu
+/vis/viewer/set/style wireframe
+/vis/viewer/set/auxiliaryEdge true
+/vis/viewer/set/lineSegmentsPerCircle 100
+
+# Thêm quỹ đạo hạt
+/vis/scene/add/trajectories smooth
+
+# =========================================================
+# CẤU HÌNH MÀU SẮC THEO TỪNG LOẠI HẠT
+# =========================================================
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set mu- red
+/vis/modeling/trajectories/drawByParticleID-0/set mu+ red
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton cyan
+/vis/modeling/trajectories/drawByParticleID-0/set gamma yellow
+/vis/modeling/trajectories/drawByParticleID-0/set e- green
+/vis/modeling/trajectories/drawByParticleID-0/set e+ green
+
+# Hiển thị các điểm chạm (Step) trên quỹ đạo
+/vis/modeling/trajectories/drawByParticleID-0/default/setDrawStepPts true
+/vis/modeling/trajectories/drawByParticleID-0/default/setStepPtsSize 3
+# =========================================================
+
+# Tích lũy vệt hạt của 100 event
+/vis/scene/endOfEventAction accumulate 100
+
+# Thêm trục tọa độ và Event ID
+/vis/scene/add/axes
+/vis/scene/add/eventID
+
+# Ẩn khối World để không che khuất camera
+/vis/geometry/set/visibility World 0 false
+
+
+# Bật lại auto-refresh để hiển thị
+/vis/viewer/set/autoRefresh true
+/vis/verbose warnings
+
+/vis/viewer/set/culling global false
+/vis/viewer/set/culling invisible false
+/vis/viewer/set/culling coveredDaughters false
+/vis/geometry/set/visibility WaterBox 0 false

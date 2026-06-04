@@ -1,0 +1,37 @@
+/control/verbose 2
+/control/saveHistory
+/run/verbose 2
+/run/numberOfThreads 1
+
+# ==============================================================
+# KHAI BÁO MÔI TRƯỜNG LỚP VỎ (Bỏ comment 1 trong 2 dòng)
+# ==============================================================
+#/detector/setCouplingFile ../data/Air_RINDEX.txt
+/detector/setCouplingFile ../data/Gel_RINDEX.txt
+
+/run/initialize
+
+# ==============================================================
+# TẮT TOÀN BỘ NHIỄU, CHỈ GIỮ LẠI TIA MUON
+# ==============================================================
+/CRY/input returnGammas 0       
+/CRY/input returnElectrons 0  
+/CRY/input returnNeutrons 0    
+/CRY/input returnProtons 0     
+/CRY/input returnPions 0       
+/CRY/input returnKaons 0       
+
+# Tọa độ ICISE Quy Nhơn, Việt Nam
+/CRY/input date 6-1-2026
+/CRY/input latitude 13.77
+/CRY/input altitude 0
+
+/CRY/input subboxLength 0.15
+/CRY/update
+
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+/run/beamOn 10
