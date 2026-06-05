@@ -143,10 +143,9 @@ RunAction::RunAction() : G4UserRunAction()
   anaMan->FinishNtuple(6);
 }
 
-RunAction::~RunAction() { delete G4AnalysisManager::Instance(); }
 void RunAction::BeginOfRunAction(const G4Run*) {
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
-  G4AnalysisManager::Instance()->OpenFile("cherenkov_water_data"); 
+  G4AnalysisManager::Instance()->OpenFile(); 
 }
 void RunAction::EndOfRunAction(const G4Run* run) {
   if (run->GetNumberOfEvent() == 0) return;

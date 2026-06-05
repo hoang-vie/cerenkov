@@ -1,0 +1,46 @@
+
+/control/verbose 0
+/control/saveHistory
+/run/verbose 0
+/run/numberOfThreads 1
+
+# Mixing random seed
+/random/setSeeds 12345 67890
+
+
+# Tyvek: Inside or Outside of acrylic
+/detector/tyvekPosition Outside
+
+# Hodoscope's size (X Y Z)
+/detector/scintSize 100 10 100 mm
+
+# SiPM's size (X Y Z)
+/detector/sipmSize 25 25 1 mm
+
+/detector/setCouplingFile ../data/Air_RINDEX.txt
+
+
+/run/initialize
+
+#Output Name : Data_Inside_Gel.root
+/analysis/setFileName Data_Outside_Gel
+
+
+/CRY/input returnGammas 0
+/CRY/input returnElectrons 0  
+/CRY/input returnNeutrons 0   
+/CRY/input returnProtons 0    
+/CRY/input returnPions 0       
+/CRY/input returnKaons 0    
+/CRY/input returnMuons 1 
+
+/CRY/input date 8-1-2019
+/CRY/input latitude 36.461893
+/CRY/input altitude 0
+/CRY/input subboxLength 0.15
+/CRY/update
+
+/event/verbose 0
+/tracking/verbose 0
+
+/run/beamOn 100

@@ -9,17 +9,35 @@
 # Vẽ hình học
 /vis/drawVolume
 
-# Hiển thị dạng khung dây (wireframe) để nhìn xuyên thấu
-/vis/viewer/set/style wireframe
+# =========================================================
+# THIẾT LẬP HIỂN THỊ HÌNH HỌC (SURFACE & TRANSPARENCY)
+# =========================================================
+# Chuyển toàn bộ view sang dạng khối đặc (surface) để loại bỏ các đường lưới tam giác rác
+/vis/viewer/set/style surface
+
+# Bật hiển thị cạnh phụ trợ để nhìn khối sắc nét hơn
 /vis/viewer/set/auxiliaryEdge true
 /vis/viewer/set/lineSegmentsPerCircle 100
 
-# Thêm quỹ đạo hạt
-/vis/scene/add/trajectories smooth
+# Ẩn khối World
+/vis/geometry/set/visibility World 0 false
+
+# Ẩn khối Nước (như bạn yêu cầu)
+/vis/geometry/set/visibility WaterBox 0 false
+
+# Hiển thị AcrylicBox (Màu xanh lá mờ 10% từ C++)
+/vis/geometry/set/visibility AcrylicBox 0 true
+
+# Hiển thị Tyvek, ép thành khối đặc để thấy rõ 16 lỗ khoét cực kỳ sắc nét
+/vis/geometry/set/visibility TyvekLogic 0 true
+/vis/geometry/set/forceSolid TyvekLogic 0 true
+
+# (Lớp CouplingBox và SensorBox sẽ tự động hiển thị theo cài đặt mặc định của C++)
 
 # =========================================================
-# CẤU HÌNH MÀU SẮC THEO TỪNG LOẠI HẠT
+# THÊM QUỸ ĐẠO HẠT VÀ MÀU SẮC
 # =========================================================
+/vis/scene/add/trajectories smooth
 /vis/modeling/trajectories/create/drawByParticleID
 /vis/modeling/trajectories/drawByParticleID-0/set mu- red
 /vis/modeling/trajectories/drawByParticleID-0/set mu+ red
@@ -31,7 +49,6 @@
 # Hiển thị các điểm chạm (Step) trên quỹ đạo
 /vis/modeling/trajectories/drawByParticleID-0/default/setDrawStepPts true
 /vis/modeling/trajectories/drawByParticleID-0/default/setStepPtsSize 3
-# =========================================================
 
 # Tích lũy vệt hạt của 100 event
 /vis/scene/endOfEventAction accumulate 100
@@ -40,10 +57,9 @@
 /vis/scene/add/axes
 /vis/scene/add/eventID
 
-# Ẩn khối World để không che khuất camera
-/vis/geometry/set/visibility World 0 false
-
-
+# =========================================================
+# HOÀN TẤT VÀ RENDER
+# =========================================================
 # Bật lại auto-refresh để hiển thị
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
@@ -51,4 +67,3 @@
 /vis/viewer/set/culling global false
 /vis/viewer/set/culling invisible false
 /vis/viewer/set/culling coveredDaughters false
-/vis/geometry/set/visibility WaterBox 0 false
