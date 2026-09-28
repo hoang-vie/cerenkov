@@ -1,0 +1,50 @@
+# User-facing deterministic example: 3 GeV downward mu- with six-face DirectSiPM.
+# This is a framework example, not an optimized detector design.
+
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 2
+
+# Detector/material configuration.
+/detector/coreProfile Water_Default
+/detector/coreSize 10 10 10 cm
+/detector/scintSize 110 10 110 mm
+/detector/useOuterShell true
+/detector/outerShellProfile PMMA_SNO_A
+/detector/outerShellThickness 3 mm
+/detector/setTyvekThickness 0.1 mm
+/detector/tyvekPosition Outside
+
+# Coupling/readout element and six-face layout.
+/detector/couplingProfile PDMS_Generic
+/detector/couplingSize 25 25 1 mm
+/detector/readoutSize 25 25 0.5 mm
+/detector/tyvekHoleSize 25 25 1 mm
+/readout/uniformGrid 2 2 25 25
+/detector/sensorMode DirectSiPM
+
+# Output policy. CoreBoundary is optional and disabled in the ordinary example.
+/output/eventMode fullAll
+/output/incidentDetail minimal
+/output/coreBoundaryMode off
+/output/fileName example_gun_direct_sipm
+/output/maxOpticalBounces 0
+/output/compressionLevel 6
+
+# Loose trigger settings keep the example focused on detector/readout transport.
+/trigger/scintThreshold 0 MeV
+/trigger/integrationWindow 100 ns
+/trigger/coincidenceWindow 100 ns
+
+/run/initialize
+
+# Deterministic generic gun. Auto-Y places the source above the current detector.
+/generator/mode Gun
+/generator/particle mu-
+/generator/energy 3 GeV
+/generator/position 0 0 0 mm
+/generator/direction 0 -1 0
+/generator/time 0 ns
+/generator/useAutoY true
+
+/run/beamOn 100

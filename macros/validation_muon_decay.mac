@@ -1,0 +1,30 @@
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 1 1 1 m
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 10 10
+/output/fileName validation_muon_decay
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/boundaryDebug false
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+/run/initialize
+
+/generator/mode Gun
+/generator/particle mu+
+/generator/energy 0 MeV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 0 -1 0
+/generator/time 0 ns
+
+/run/printProgress 10000
+/run/beamOn 100000

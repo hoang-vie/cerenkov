@@ -1,0 +1,48 @@
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 2
+
+# Example direct-SiPM response using a 3 x 3 mm active entrance.
+# Replace geometry/coupling dimensions with the actual hardware stack when known.
+/detector/coreProfile Water_Default
+/detector/coreSize 10 10 10 cm
+/detector/scintSize 110 10 110 mm
+/detector/readoutSize 3 3 0.5 mm
+/detector/couplingProfile PDMS_Generic
+/detector/couplingSize 3 3 1 mm
+/detector/tyvekHoleSize 3 3 1 mm
+/detector/useOuterShell true
+/detector/outerShellProfile PMMA_SNO_A
+/detector/outerShellThickness 3 mm
+/detector/setTyvekThickness 0.1 mm
+/detector/tyvekPosition Outside
+
+/readout/uniformGrid 2 2 25 25
+/detector/sensorMode DirectSiPM
+/output/incidentDetail minimal
+/output/eventMode thinAll
+/output/coreBoundaryMode off
+/output/fileName direct_sipm
+/output/maxOpticalBounces 0
+/output/compressionLevel 6
+
+/trigger/scintThreshold 0 MeV
+/trigger/integrationWindow 100 ns
+/trigger/coincidenceWindow 100 ns
+
+/run/initialize
+/generator/mode CRY
+/CRY/timeMode relative
+/CRY/input returnGammas 0
+/CRY/input returnElectrons 0
+/CRY/input returnNeutrons 0
+/CRY/input returnProtons 0
+/CRY/input returnPions 0
+/CRY/input returnMuons 1
+/CRY/input date 6-18-2026
+/CRY/input latitude 4.63
+/CRY/input altitude 0
+/CRY/input subboxLength 0.15
+/CRY/update
+
+/run/beamOn 1000

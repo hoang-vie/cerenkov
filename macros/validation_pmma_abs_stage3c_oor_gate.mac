@@ -1,0 +1,65 @@
+# PMMA Stage 3C: Geant4 runtime validation of the densified measured-domain
+# SNO Sample-A absorption candidate.
+#
+# Validation-only expert override. Production PMMA_SNO_A remains unchanged.
+#
+# The PMMA core is 2000 mm long along +X; photons that survive to the +X core
+# boundary at 1000 mm are treated as right-censored. OpRayleigh and OpBoundary
+# are disabled so the free-path distribution isolates OpAbsorption.
+/control/useDoublePrecision true
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Acrylic
+/detector/coreSize 2000 100 100 mm
+/detector/useOuterShell false
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 0 0
+/detector/pmmaAbsFile PMMA_SNO_UVT_SampleA_ABS_TableI_RT_plus_TableII_300to500_Candidate.txt
+
+/output/fileName validation_pmma_abs_stage3c_oor_gate
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/incidentDetail minimal
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption true
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary false
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 1 0 0
+/generator/polarization 0 1 0
+/generator/time 0 ns
+/run/printProgress 5000
+# run0: deliberately below measured domain, 299.99 nm
+/generator/energy 4.13294437925264 eV
+/run/beamOn 1
+
+# run1: exact lower endpoint, 300.00 nm
+/generator/energy 4.13280661444 eV
+/run/beamOn 1
+
+# run2: inside measured domain, 400.00 nm
+/generator/energy 3.09960496083 eV
+/run/beamOn 1
+
+# run3: exact upper endpoint, 500.00 nm
+/generator/energy 2.47968396866 eV
+/run/beamOn 1
+
+# run4: deliberately above measured domain, 500.01 nm
+/generator/energy 2.47963437597648 eV
+/run/beamOn 1

@@ -1,0 +1,12 @@
+# SNO UV-transmitting acrylic Sample A, unaged, RTT' method.
+# Columns: wavelength_nm  refractive_index
+# Zwinkels, Davidson & Dodd, Applied Optics 29 (1990) 3240-3248,
+# Table I, DOI 10.1364/AO.29.003240.
+300 1.492
+310 1.509
+320 1.516
+335 1.514
+350 1.514
+365 1.510
+385 1.511
+405 1.505

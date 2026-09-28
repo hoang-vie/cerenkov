@@ -1,0 +1,47 @@
+# Stage 3D: first-Rayleigh angular/polarization validation of G4OpRayleigh.
+#
+# Input optical photons travel +Z with linear polarization +X in a 500-m
+# Water_Default cube. The production Zhang-Hu PMH table is used for the mean
+# free path, while this test focuses on the FIRST Rayleigh scatter direction and
+# polarization.  BoundaryDebug is deliberately enabled: Stage 3D tags the
+# first Rayleigh step as BoundaryStatus=-1001, BoundaryStatusName=
+# "FirstRayleighScatter" without changing the ROOT schema.
+#
+# OpAbsorption and OpBoundary are disabled to isolate G4OpRayleigh.
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 500000 500000 500000 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 0 0
+
+/output/fileName validation_water_rayleigh_angular_stage3d
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/boundaryDebug true
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh true
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary false
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+# 400 nm = 3.09960496 eV
+/generator/energy 3.09960496 eV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 0 0 1
+/generator/polarization 1 0 0
+/generator/time 0 ns
+/run/printProgress 5000
+/run/beamOn 50000

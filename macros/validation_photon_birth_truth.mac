@@ -1,0 +1,50 @@
+# Deterministic validation of Photon Birth* semantics and FirstWall timing.
+# Purpose:
+#   - prove Photon.BirthTime_ns is the optical creation time, not first-step end time;
+#   - prove full BirthXYZ/Dir are the creation state;
+#   - recheck compact FirstWall XYZ/time with BoundaryDebug OFF.
+#
+# Geometry: 100-mm water cube, optical photon born at centre, +X direction.
+# Source global time is deliberately 7 ns so a time-origin bug is obvious.
+
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100 100 100 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0.1 mm
+/detector/tyvekPosition Outside
+/readout/uniformGrid 0 0 0 0
+
+/output/fileName validation_photon_birth_truth
+/output/eventMode fullAll
+/output/photonBirthDetail full
+/output/incidentDetail minimal
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+/output/compressionLevel 6
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 2.7552044 eV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 1 0 0
+/generator/polarization 0 1 0
+/generator/time 7 ns
+
+/run/printProgress 20
+/run/beamOn 100

@@ -1,0 +1,25 @@
+# Candidate densified measured-domain ABSLENGTH for SNO UVT acrylic Sample A.
+# Primary source: J. C. Zwinkels, W. F. Davidson, C. X. Dodd,
+# Applied Optics 29 (1990) 3240-3248, DOI 10.1364/AO.29.003240.
+#
+# 300-405 nm: union of Sample-A Table-I RT absorption-coefficient nodes and
+# compatible Table-II blank-specimen nodes.
+# 450 and 500 nm: Table-II blank-specimen nodes.
+# Conversion: ABSLENGTH_mm = 10 / alpha_cm^-1.
+#
+# IMPORTANT: candidate covers ONLY measured/tabulated 300-500 nm.
+# No sub-300 or >500 extrapolation is inserted here.
+# STATUS: candidate; not production default until runtime/regression review.
+# Columns: wavelength_nm  ABSLENGTH_mm
+300	24.3902439
+310	109.8901099
+320	163.9344262
+325	181.8181818
+335	263.1578947
+350	400
+365	588.2352941
+385	1000
+400	1111.111111
+405	1111.111111
+450	1111.111111
+500	1428.571429

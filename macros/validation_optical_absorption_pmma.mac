@@ -1,0 +1,39 @@
+# Runtime Geant4 OpAbsorption validation using the measured SNO Sample-A
+# PMMA attenuation point at 300 nm (~24.39 mm).  The 1-m-long PMMA core makes
+# escape before absorption negligible, so Photon.EndTrackLength_mm should be
+# exponentially distributed with the tabulated absorption length.
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Acrylic
+/detector/coreSize 1000 100 100 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 0 0
+/output/fileName validation_optical_absorption_pmma
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption true
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary false
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 4.1328066 eV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 1 0 0
+/generator/polarization 0 1 0
+/generator/time 0 ns
+/run/printProgress 2000
+/run/beamOn 20000

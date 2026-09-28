@@ -1,0 +1,79 @@
+# CB1 deterministic validation of CoreBoundaryCrossing firstExit semantics.
+# Runs 0..5 inject 1000 centered-normal optical photons toward:
+# +X, -X, +Z, -Z, +Y, -Y.
+# The source is offset so the expected face-local coordinates are U=+7 mm,
+# V=-5 mm on every primary face. Fresnel-reflected photons may later exit the
+# opposite face; the validator allows that but rejects all other faces.
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100 100 100 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/detector/couplingSize 25 25 1 mm
+/detector/readoutSize 25 25 1 mm
+/readout/uniformGrid 0 0 0 0
+/detector/sensorMode ConcentratorInput
+
+/output/fileName validation_core_boundary_first_exit_6faces
+/output/eventMode fullAll
+/output/incidentDetail minimal
+/output/photonBirthDetail full
+/output/coreBoundaryMode firstExit
+/output/coreBoundaryDetail phaseSpace
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 2.7552044 eV
+/generator/useAutoY false
+/generator/time 0 ns
+
+# run0: +X. +X local U=-Z, V=+Y => world (0,-5,-7) mm.
+/generator/position 0 -5 -7 mm
+/generator/polarization 0 1 0
+/generator/direction 1 0 0
+/run/beamOn 1000
+
+# run1: -X. -X local U=+Z, V=+Y => world (0,-5,+7) mm.
+/generator/position 0 -5 7 mm
+/generator/polarization 0 1 0
+/generator/direction -1 0 0
+/run/beamOn 1000
+
+# run2: +Z. +Z local U=+X, V=+Y => world (+7,-5,0) mm.
+/generator/position 7 -5 0 mm
+/generator/polarization 0 1 0
+/generator/direction 0 0 1
+/run/beamOn 1000
+
+# run3: -Z. -Z local U=-X, V=+Y => world (-7,-5,0) mm.
+/generator/position -7 -5 0 mm
+/generator/polarization 0 1 0
+/generator/direction 0 0 -1
+/run/beamOn 1000
+
+# run4: +Y. +Y local U=+X, V=-Z => world (+7,0,+5) mm.
+/generator/position 7 0 5 mm
+/generator/polarization 1 0 0
+/generator/direction 0 1 0
+/run/beamOn 1000
+
+# run5: -Y. -Y local U=+X, V=+Z => world (+7,0,-5) mm.
+/generator/position 7 0 -5 mm
+/generator/polarization 1 0 0
+/generator/direction 0 -1 0
+/run/beamOn 1000

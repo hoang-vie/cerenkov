@@ -1,0 +1,126 @@
+# PDMS Stage 4C-B
+# Actual reverse detector interface: PDMS -> PMMA at 400 nm.
+#
+# +X channel geometry:
+#   PMMA outer boundary x=53 mm
+#   PDMS occupies x=53..54 mm
+#
+# Start at x=53.5 mm inside PDMS and propagate inward.
+#
+# Incidence plane = X-Y.
+# Incident direction = (-cos(theta), +sin(theta), 0).
+# s polarization = +Z.
+# p polarization = (+sin(theta), +cos(theta), 0).
+
+/control/useDoublePrecision true
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100 100 100 mm
+
+/detector/useOuterShell true
+/detector/outerShellProfile PMMA_SNO_A
+/detector/outerShellThickness 3 mm
+
+/detector/setTyvekThickness 0 mm
+
+/detector/couplingSize 25 25 1 mm
+/detector/readoutSize 25 25 1 mm
+
+/readout/uniformGrid 0 0 0 0
+/readout/planeGrid +X true 1 1 0 0 0 0
+
+/detector/couplingProfile PDMS_Generic
+/detector/sensorMode ConcentratorInput
+
+/output/fileName validation_pdms_interface_stage4c_pdms_to_pmma_scan
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/incidentDetail minimal
+/output/boundaryDebug true
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 3.09960496083 eV
+/generator/useAutoY false
+
+# Half-way through 1-mm PDMS layer.
+/generator/position 53.5 0 0 mm
+
+/generator/time 0 ns
+/run/printProgress 20000
+
+
+# run0: theta_i=0 deg, s
+/generator/direction -1.000000000000000 0.000000000000000 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run1: theta_i=0 deg, p
+/generator/direction -1.000000000000000 0.000000000000000 0
+/generator/polarization 0.000000000000000 1.000000000000000 0
+/run/beamOn 100000
+
+# run2: theta_i=30 deg, s
+/generator/direction -0.866025403784439 0.500000000000000 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run3: theta_i=30 deg, p
+/generator/direction -0.866025403784439 0.500000000000000 0
+/generator/polarization 0.500000000000000 0.866025403784439 0
+/run/beamOn 100000
+
+# run4: theta_i=45 deg, s
+/generator/direction -0.707106781186548 0.707106781186547 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run5: theta_i=45 deg, p
+/generator/direction -0.707106781186548 0.707106781186547 0
+/generator/polarization 0.707106781186547 0.707106781186548 0
+/run/beamOn 100000
+
+# run6: theta_i=46.66 deg, s
+/generator/direction -0.686326266989435 0.727293788809135 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run7: theta_i=46.66 deg, p
+/generator/direction -0.686326266989435 0.727293788809135 0
+/generator/polarization 0.727293788809135 0.686326266989435 0
+/run/beamOn 100000
+
+# run8: theta_i=60 deg, s
+/generator/direction -0.500000000000000 0.866025403784439 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run9: theta_i=60 deg, p
+/generator/direction -0.500000000000000 0.866025403784439 0
+/generator/polarization 0.866025403784439 0.500000000000000 0
+/run/beamOn 100000
+
+# run10: theta_i=70 deg, s
+/generator/direction -0.342020143325669 0.939692620785908 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run11: theta_i=70 deg, p
+/generator/direction -0.342020143325669 0.939692620785908 0
+/generator/polarization 0.939692620785908 0.342020143325669 0
+/run/beamOn 100000

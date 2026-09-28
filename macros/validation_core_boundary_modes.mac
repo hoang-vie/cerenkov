@@ -1,0 +1,68 @@
+# CB1 mode/detail/TIR semantic validation for CoreBoundaryCrossing.
+# run0: recorder OFF -> 0 rows.
+# run1: firstExit/basic -> 100 rows; polarization columns must be NaN.
+# run2: firstExit/phaseSpace -> 100 rows; polarization must be finite/unit/perpendicular.
+# run3: firstExit/basic + a direction that is TIR on every Water->Air face;
+#       Photon.FirstWall is set but CoreBoundaryCrossing must remain empty.
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100 100 100 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/detector/couplingSize 25 25 1 mm
+/detector/readoutSize 25 25 1 mm
+/readout/uniformGrid 0 0 0 0
+/detector/sensorMode ConcentratorInput
+
+/output/fileName validation_core_boundary_modes
+/output/eventMode fullAll
+/output/incidentDetail minimal
+/output/photonBirthDetail full
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 2.7552044 eV
+/generator/useAutoY false
+/generator/time 0 ns
+/generator/position 0 0 0 mm
+/generator/direction 1 0 0
+/generator/polarization 0 1 0
+
+# run0: recorder disabled.
+/output/coreBoundaryMode off
+/output/coreBoundaryDetail basic
+/run/beamOn 100
+
+# run1: basic keeps a fixed schema but polarization values are NaN.
+/output/coreBoundaryMode firstExit
+/output/coreBoundaryDetail basic
+/run/beamOn 100
+
+# run2: phaseSpace stores post-transmission polarization.
+/output/coreBoundaryDetail phaseSpace
+/run/beamOn 100
+
+# run3: TIR-only trajectory. Components are all below cos(theta_c)~0.66 for
+# Water->Air, so every face encounter is above the critical angle. A finite
+# bounce safety cut terminates the otherwise trapped photons.
+/output/coreBoundaryDetail basic
+/output/maxOpticalBounces 12
+/generator/position 3 -4 5 mm
+/generator/direction 0.60 0.58 0.55
+/generator/polarization 0.695022 -0.718989 0
+/run/beamOn 100

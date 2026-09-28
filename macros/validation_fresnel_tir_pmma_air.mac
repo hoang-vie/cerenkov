@@ -1,0 +1,50 @@
+# PMMA -> air boundary test at 500 nm.
+# Core is elongated transversely so the +X plane is reached for 50-degree rays.
+# run0: 30 deg s-polarized; run1: 30 deg p-polarized; run2: 50 deg s-pol (TIR).
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Acrylic
+/detector/coreSize 100 1000 1000 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 0 0
+/output/fileName validation_fresnel_tir_pmma_air
+/output/eventMode fullAll
+/output/photonBirthDetail full
+/output/boundaryDebug true
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 2.4796839 eV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/time 0 ns
+
+# 30 deg incidence relative to +X normal: d=(cos30,sin30,0)
+# s polarization is perpendicular to the x-y incidence plane.
+/generator/direction 0.8660254038 0.5 0
+/generator/polarization 0 0 1
+/run/beamOn 30000
+
+# p polarization in incidence plane and perpendicular to d.
+/generator/direction 0.8660254038 0.5 0
+/generator/polarization -0.5 0.8660254038 0
+/run/beamOn 30000
+
+# Above theta_critical (~42 deg): every first boundary interaction should TIR.
+/generator/direction 0.6427876097 0.7660444431 0
+/generator/polarization 0 0 1
+/run/beamOn 10000

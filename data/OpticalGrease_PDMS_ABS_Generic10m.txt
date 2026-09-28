@@ -1,0 +1,18 @@
+# Generic PDMS/silicone-grease bulk attenuation placeholder.
+# IMPORTANT: this is an explicit modeling assumption, not a measured vendor curve.
+# The Roychowdhury 2018 liquid-PDMS study reports transparency over 191-1688 nm but the exact
+# numerical extinction-coefficient table is not embedded here. A finite 10 m attenuation length
+# is used so the material is not mathematically lossless. For a 1 mm layer this contributes ~0.01%
+# bulk attenuation. Replace this file when the actual optical grease is selected.
+# Columns: wavelength_nm  ABSLENGTH_m
+200	10.0
+250	10.0
+300	10.0
+350	10.0
+400	10.0
+450	10.0
+500	10.0
+600	10.0
+700	10.0
+800	10.0
+900	10.0

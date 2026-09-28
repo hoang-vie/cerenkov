@@ -1,0 +1,10 @@
+# SNO UV-transmitting acrylic Sample A, blank specimen.
+# Columns: wavelength_nm  absorption_length_mm
+# Converted from alpha (cm^-1) in Zwinkels, Davidson & Dodd,
+# Applied Optics 29 (1990) 3240-3248, Table II, DOI 10.1364/AO.29.003240.
+300 24.3902439
+325 181.8181818
+350 400.0
+400 1111.1111111
+450 1111.1111111
+500 1428.5714286

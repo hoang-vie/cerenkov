@@ -1,0 +1,40 @@
+# Statistical first-hit validation of the current generic Tyvek-like
+# effective dielectric_metal surface at 450 nm.  With readout disabled there
+# are no punched holes.  First-boundary reflected fraction should match the
+# tabulated REFLECTIVITY within counting statistics.
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100 100 100 mm
+/detector/useAcrylicShell false
+/detector/tyvekPosition Inside
+/detector/setTyvekThickness 0.1 mm
+/readout/uniformGrid 0 0 0 0
+/output/fileName validation_tyvek_reflectivity_450nm
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/boundaryDebug true
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 2.7552044 eV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 1 0 0
+/generator/polarization 0 1 0
+/generator/time 0 ns
+/run/printProgress 5000
+/run/beamOn 50000

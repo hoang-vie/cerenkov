@@ -1,0 +1,24 @@
+# Generic Tyvek-like reflectivity approximation; not a verified digitization of a specific Tyvek grade.
+# Col 1: Wavelength (nm), Col 2: Reflection Ratio (0.0 -> 1.0)
+200    0.200
+225    0.350
+250    0.500
+260    0.600
+270    0.680
+280    0.750
+290    0.800
+300    0.850
+320    0.900
+340    0.930
+360    0.945
+380    0.955
+400    0.965
+450    0.970
+500    0.975
+550    0.975
+600    0.975
+650    0.975
+700    0.975
+800    0.975
+850    0.975
+900    0.975

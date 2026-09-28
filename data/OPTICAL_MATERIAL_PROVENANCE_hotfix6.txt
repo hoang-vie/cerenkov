@@ -1,0 +1,32 @@
+# Optical-material provenance — hotfix6_physics_audit1
+
+Water RINDEX:
+  Daimon & Masumura, Applied Optics 46, 3811-3820 (2007), DOI 10.1364/AO.46.003811.
+  Published Sellmeier validity 182-1129 nm; sampled here 200-900 nm at 21.5 C.
+
+Water ABSLENGTH:
+  Fewell & von Trojan, Applied Optics 58, 2408-2418 (2019), DOI 10.1364/AO.58.002408.
+  Adopted pure-water absorption coefficients; source paper covers 171-2000 nm.
+  This project file keeps 200-899.3 nm and stores 1/alpha in metres.
+
+PMMA RINDEX:
+  Roychowdhury et al., Surface Science Spectra 27, 016002 (2020), DOI 10.1116/1.5095422.
+  The paper measured 191-1688 nm. The project file is explicitly a 3-anchor Cauchy approximation
+  constrained to the published n(300), n(500), n(1000), not the raw optical-function table.
+
+PMMA ABSLENGTH:
+  SNO UV-transmitting Sample-A Table-II dataset already bundled with hotfix5.
+  Its measured numeric range in this project is 300-500 nm. Geant4 endpoint behavior outside
+  that range is therefore recorded explicitly in RunConfig. This is kept rather than fabricating
+  broad-range attenuation values from a plot.
+
+Optical grease:
+  Material composition is now a generic PDMS repeat-unit model [C2H6OSi], density 0.97 g/cm3.
+  RINDEX uses a 3-anchor Cauchy approximation from Roychowdhury et al., Surface Science Spectra
+  25, 026001 (2018), DOI 10.1116/1.5046735. ABSLENGTH=10 m is an explicit placeholder assumption,
+  not a vendor measurement.
+
+Water Rayleigh:
+  The current lambda^-4 table is retained only as an explicit baseline assumption; it is not
+  promoted to measured/validated status. Runtime Rayleigh validation is added, but absolute
+  realism remains a systematic until a specific published scattering model/table is selected.

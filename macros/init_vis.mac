@@ -1,0 +1,54 @@
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 2
+
+# Geometry example matching the current small acrylic-core study.
+/detector/tyvekPosition Inside
+/detector/coreMaterial Acrylic
+/detector/coreSize 5 5 5 cm
+/detector/scintSize 50 10 50 mm
+/detector/sipmSize 10 10 1 mm
+/detector/tyvekHoleSize 10 10 1 mm
+/detector/couplingSize 10 10 1 mm
+/detector/setAcrylicThickness 3 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/detector/scintGap 5 mm
+/detector/sourceDistance 5 mm
+
+# Flexible readout: 2 x 2 per enabled face, centres at +/-5 mm.
+/readout/uniformGrid 2 2 10 10
+/detector/sensorMode ConcentratorInput
+
+# Trigger defaults shown explicitly; replace with measured/validated values.
+/trigger/scintThreshold 0 MeV
+/trigger/integrationWindow 100 ns
+/trigger/coincidenceWindow 100 ns
+
+# Size-optimized production output.
+/output/fileName visual_data
+/output/eventMode thinAll
+/output/incidentDetail auto
+/output/photonBirthDetail basic
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+/output/compressionLevel 6
+
+/run/initialize
+
+/generator/mode CRY
+/CRY/timeMode relative
+/CRY/input returnGammas 0
+/CRY/input returnElectrons 0
+/CRY/input returnNeutrons 0
+/CRY/input returnProtons 0
+/CRY/input returnPions 0
+/CRY/input returnMuons 1
+/CRY/input date 6-18-2026
+/CRY/input latitude 4.63
+/CRY/input altitude 0
+/CRY/input subboxLength 0.15
+/CRY/update
+
+/control/execute vis.mac
+/run/printProgress 10

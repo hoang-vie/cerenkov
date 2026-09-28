@@ -1,0 +1,11 @@
+#ifndef CherenkovBuildInfo_h
+#define CherenkovBuildInfo_h 1
+
+namespace CherenkovBuildInfo {
+inline constexpr const char* GitCommit = "@CHERENKOV_GIT_COMMIT@";
+inline constexpr const char* GitBranch = "@CHERENKOV_GIT_BRANCH@";
+inline constexpr int GitDirty = @CHERENKOV_GIT_DIRTY@;
+inline constexpr const char* ProjectRevision = "@CHERENKOV_PROJECT_REVISION@";
+}
+
+#endif

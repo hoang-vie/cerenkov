@@ -1,0 +1,12 @@
+Dataset: SNO UV-transmitting acrylic Sample A
+Reference: J. C. Zwinkels, W. F. Davidson, C. X. Dodd, Applied Optics 29 (1990) 3240-3248
+DOI: 10.1364/AO.29.003240
+
+Included exact tabulated values:
+- ABS file: Table II, blank specimen, 300-500 nm. Values converted from alpha [cm^-1] to Labs [mm] via Labs=10/alpha.
+- RINDEX file: Table I, unaged Sample A, RTT' method, 300-405 nm.
+
+Important scope:
+- These files contain only published tabulated values; no unsourced extrapolation is inserted.
+- The paper studies detector-grade UV-transmitting acrylic for SNO. It is a reference material, not proof that an arbitrary prototype PMMA sheet has the same optical properties.
+- The production configuration currently retains the broad-range project RINDEX table so Cherenkov generation is not artificially truncated at 405 nm. The SNO ABS table can be used as the reference attenuation dataset over its measured range; any extension outside the published range must be documented explicitly.

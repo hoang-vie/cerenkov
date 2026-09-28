@@ -1,0 +1,31 @@
+# Build
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Simulation outputs
+*.root
+*.log
+*.out
+
+# Generated plots/results
+results/
+plots/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+*~
+*.swp
+
+# Archives
+*.zip
+*.tar.gz
+
+# Python
+__pycache__/
+*.pyc

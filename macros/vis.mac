@@ -1,0 +1,26 @@
+/vis/open OGL 800x800-0+0
+/vis/viewer/set/background 0.2 0.2 0.2
+/vis/viewer/set/autoRefresh false
+/vis/verbose warnings
+
+/vis/drawVolume
+/vis/viewer/set/style surface
+/vis/viewer/set/hiddenEdge true
+/vis/viewer/set/lineSegmentsPerCircle 100
+
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set mu- red
+/vis/modeling/trajectories/drawByParticleID-0/set mu+ red
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton cyan
+/vis/modeling/trajectories/drawByParticleID-0/set gamma yellow
+/vis/modeling/trajectories/drawByParticleID-0/set e- green
+/vis/modeling/trajectories/drawByParticleID-0/set e+ green
+/vis/modeling/trajectories/drawByParticleID-0/default/setDrawStepPts true
+/vis/modeling/trajectories/drawByParticleID-0/default/setStepPtsSize 3
+/vis/scene/endOfEventAction accumulate 20
+/vis/scene/add/axes
+/vis/scene/add/eventID
+/vis/viewer/set/culling global false
+/vis/viewer/set/autoRefresh true
+/vis/viewer/refresh

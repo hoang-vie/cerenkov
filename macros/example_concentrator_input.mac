@@ -1,0 +1,49 @@
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 2
+
+/detector/coreProfile Water_Default
+/detector/coreSize 10 10 10 cm
+/detector/scintSize 110 10 110 mm
+/detector/readoutSize 10 10 0.1 mm
+/detector/couplingProfile PDMS_Generic
+/detector/couplingSize 10 10 1 mm
+/detector/tyvekHoleSize 10 10 1 mm
+/detector/useOuterShell true
+/detector/outerShellProfile PMMA_SNO_A
+/detector/outerShellThickness 3 mm
+/detector/setTyvekThickness 0.1 mm
+/detector/tyvekPosition Outside
+
+# Example: independent layouts on different faces.
+/readout/planeGrid +X true 3 3 15 15 0 0
+/readout/planeGrid -X true 3 3 15 15 0 0
+/readout/planeAuto +Z true 2 2 2 2
+/readout/planeAuto -Z true 2 2 2 2
+/readout/planeGrid +Y false 0 0 10 10 0 0
+/readout/planeGrid -Y false 0 0 10 10 0 0
+
+/detector/sensorMode ConcentratorInput
+/output/incidentDetail phaseSpace
+/output/eventMode thinAll
+/output/coreBoundaryMode off
+/output/fileName concentrator_input
+/output/maxOpticalBounces 0
+/output/compressionLevel 6
+
+/run/initialize
+/generator/mode CRY
+/CRY/timeMode relative
+/CRY/input returnGammas 0
+/CRY/input returnElectrons 0
+/CRY/input returnNeutrons 0
+/CRY/input returnProtons 0
+/CRY/input returnPions 0
+/CRY/input returnMuons 1
+/CRY/input date 6-18-2026
+/CRY/input latitude 4.63
+/CRY/input altitude 0
+/CRY/input subboxLength 0.15
+/CRY/update
+
+/run/beamOn 1000

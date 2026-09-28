@@ -1,0 +1,41 @@
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 10 10 10 cm
+/detector/scintSize 110 10 110 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/detector/scintGap 15 mm
+/detector/sourceDistance 20 mm
+/readout/uniformGrid 0 0 10 10
+
+/trigger/scintThreshold 0.1 MeV
+/trigger/integrationWindow 100 ns
+/trigger/coincidenceWindow 100 ns
+
+/output/fileName validation_trigger_muon
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/boundaryDebug false
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+/run/initialize
+
+/generator/mode Gun
+/generator/particle mu-
+/generator/energy 3 GeV
+# Set the explicit fallback position first: SetGunPosition() intentionally
+# disables auto-Y.  Re-enable auto-Y afterwards so the validation muon really
+# starts above the top scintillator.
+/generator/position 0 0 0 mm
+/generator/useAutoY true
+/generator/direction 0 -1 0
+/generator/time 0 ns
+
+/run/printProgress 100
+/run/beamOn 1000

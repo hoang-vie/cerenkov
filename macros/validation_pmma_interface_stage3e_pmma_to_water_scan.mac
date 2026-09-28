@@ -1,0 +1,133 @@
+# PMMA Stage 3E-C
+# PMMA -> Water Fresnel/Snell/TIR scan at 400 nm.
+#
+# Photon starts in the +X PMMA shell at x=50.5 mm and travels inward.
+# Interface Water/PMMA is x=50 mm.
+#
+# Incidence plane = X-Y.
+# Incident direction = (-cos(theta), +sin(theta), 0).
+# s polarization = +Z.
+# p polarization = (+sin(theta), +cos(theta), 0).
+
+/control/useDoublePrecision true
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100 100 100 mm
+/detector/useOuterShell true
+/detector/outerShellProfile PMMA_SNO_A
+/detector/outerShellThickness 3 mm
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 0 0
+
+/output/fileName validation_pmma_interface_stage3e_pmma_to_water_scan
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/incidentDetail minimal
+/output/boundaryDebug true
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh false
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary true
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 3.09960496083 eV
+/generator/useAutoY false
+
+# 0.5 mm inside the PMMA shell.
+/generator/position 50.5 0 0 mm
+
+/generator/time 0 ns
+/run/printProgress 20000
+
+
+# run0: theta_i=0 deg, s
+/generator/direction -1.000000000000000 0.000000000000000 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run1: theta_i=0 deg, p
+/generator/direction -1.000000000000000 0.000000000000000 0
+/generator/polarization 0.000000000000000 1.000000000000000 0
+/run/beamOn 100000
+
+# run2: theta_i=30 deg, s
+/generator/direction -0.866025403784439 0.500000000000000 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run3: theta_i=30 deg, p
+/generator/direction -0.866025403784439 0.500000000000000 0
+/generator/polarization 0.500000000000000 0.866025403784439 0
+/run/beamOn 100000
+
+# run4: theta_i=42 deg, s
+/generator/direction -0.743144825477394 0.669130606358858 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run5: theta_i=42 deg, p
+/generator/direction -0.743144825477394 0.669130606358858 0
+/generator/polarization 0.669130606358858 0.743144825477394 0
+/run/beamOn 100000
+
+# run6: theta_i=60 deg, s
+/generator/direction -0.500000000000000 0.866025403784439 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run7: theta_i=60 deg, p
+/generator/direction -0.500000000000000 0.866025403784439 0
+/generator/polarization 0.866025403784439 0.500000000000000 0
+/run/beamOn 100000
+
+# run8: theta_i=63 deg, s
+/generator/direction -0.453990499739547 0.891006524188368 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run9: theta_i=63 deg, p
+/generator/direction -0.453990499739547 0.891006524188368 0
+/generator/polarization 0.891006524188368 0.453990499739547 0
+/run/beamOn 100000
+
+# run10: theta_i=63.3 deg, s
+/generator/direction -0.449318998615897 0.893371388327837 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run11: theta_i=63.3 deg, p
+/generator/direction -0.449318998615897 0.893371388327837 0
+/generator/polarization 0.893371388327837 0.449318998615897 0
+/run/beamOn 100000
+
+# run12: theta_i=63.5 deg, s
+/generator/direction -0.446197813109809 0.894934361602025 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run13: theta_i=63.5 deg, p
+/generator/direction -0.446197813109809 0.894934361602025 0
+/generator/polarization 0.894934361602025 0.446197813109809 0
+/run/beamOn 100000
+
+# run14: theta_i=70 deg, s
+/generator/direction -0.342020143325669 0.939692620785908 0
+/generator/polarization 0 0 1
+/run/beamOn 100000
+
+# run15: theta_i=70 deg, p
+/generator/direction -0.342020143325669 0.939692620785908 0
+/generator/polarization 0.939692620785908 0.342020143325669 0
+/run/beamOn 100000

@@ -1,0 +1,41 @@
+# Runtime Geant4 OpRayleigh validation at 300 nm.
+# Water_Default production Zhang-Hu PMH Rayleigh length at 300 nm is ~55.76 m.
+# The source starts at the
+# center of a 100-m cube and travels +X, so photons with no first scatter by
+# 50 m are right-censored. OpAbsorption and OpBoundary are disabled here to
+# isolate the Rayleigh process.
+/control/verbose 1
+/run/verbose 1
+/run/numberOfThreads 1
+
+/detector/coreMaterial Water
+/detector/coreSize 100000 100000 100000 mm
+/detector/useAcrylicShell false
+/detector/setTyvekThickness 0 mm
+/readout/uniformGrid 0 0 0 0
+/output/fileName validation_optical_rayleigh_water
+/output/eventMode fullAll
+/output/photonBirthDetail basic
+/output/boundaryDebug false
+/output/maxOpticalBounces 0
+
+/process/optical/processActivation Cerenkov false
+/process/optical/processActivation Scintillation false
+/process/optical/processActivation OpAbsorption false
+/process/optical/processActivation OpRayleigh true
+/process/optical/processActivation OpMieHG false
+/process/optical/processActivation OpBoundary false
+/process/optical/processActivation OpWLS false
+/process/optical/processActivation OpWLS2 false
+
+/run/initialize
+/generator/mode Gun
+/generator/particle opticalphoton
+/generator/energy 4.1328066 eV
+/generator/useAutoY false
+/generator/position 0 0 0 mm
+/generator/direction 1 0 0
+/generator/polarization 0 1 0
+/generator/time 0 ns
+/run/printProgress 2000
+/run/beamOn 20000
