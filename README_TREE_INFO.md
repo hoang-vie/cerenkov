@@ -1,5 +1,5 @@
 # ROOT tree / branch reference — general-v1.10
-> Baseline: **general-v1.10 framework metadata on top of the validated physics baseline**. This file follows the ntuple definitions in `src/RunAction.cc` and complements `SCHEMA.md`.
+> Baseline: **general-v1.10 framework metadata for the current simulation model**. This file follows the ntuple definitions in `src/RunAction.cc` and complements `SCHEMA.md`.
 ## 1. How to think about the ROOT file
 All ntuples belong to one simulation run. Use IDs for joins; do not rely on ROOT row order. The most common join keys are:
 
@@ -32,7 +32,7 @@ Thin event and trigger summary.
 | 0 | `RunID` | Int | Run identifier. |
 | 1 | `EventID` | Int | Event identifier. |
 | 2 | `TriggerPassed` | Int | 1 if the configured top/bottom trigger condition passed, otherwise 0. |
-| 3 | `EdepTop_MeV` | Float | Total/integrated top trigger-paddle deposited energy used by event trigger logic. |
+| 3 | `EdepTop_MeV` | Float | Total event energy deposited in the top paddle; trigger thresholding uses individual grouped pulses. |
 | 4 | `EdepBottom_MeV` | Float | Bottom trigger-paddle counterpart. |
 | 5 | `TimeTop_ns` | Float | Representative top trigger-pulse time. |
 | 6 | `TimeBottom_ns` | Float | Representative bottom trigger-pulse time. |
@@ -117,7 +117,6 @@ Per-track per-volume deposited energy and path length.
 
 ## `Photon` — 36 branches
 
-One compact summary row per optical photon.
 One compact summary row per optical photon. `PhotonID` is the optical Geant4 TrackID.
 
 | # | Branch | Type | Meaning / unit |
@@ -156,7 +155,7 @@ One compact summary row per optical photon. `PhotonID` is the optical Geant4 Tra
 | 31 | `KilledBySafetyCut` | Int | 1 if killed by configured max-optical-bounce safety cut. |
 | 32 | `FirstRayleighTrackLength_mm` | Float | Track length at first Rayleigh scatter; used for MFP validation. |
 | 33 | `EndTrackLength_mm` | Float | Total photon track length when it ended. |
-| 34 | `AcrylicAbsOutOfRange` | Int | 1 if the photon traversed acrylic where absorption wavelength was outside the measured/tabulated validity interval and endpoint policy was used. |
+| 34 | `AcrylicAbsOutOfRange` | Int | 1 if the photon traversed acrylic where absorption wavelength was outside the declared empirical absorption domain; an explicit extension or endpoint policy may apply. |
 | 35 | `EmitterBeta` | Float | For Cherenkov photons, exact step-average emitter beta used by current G4Cerenkov sampling; NaN for non-Cherenkov photons. |
 
 **`Photon.EndReason` codes**
