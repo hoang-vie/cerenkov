@@ -1,111 +1,47 @@
-> **hotfix6_physics_audit7_final_integrated_freeze status:** physics-validation
-> baseline complete. Deterministic Geant4+ROOT validation, schema/static checks,
-> material/surface/sensor validation, charged-particle transport, muon decay,
-> ancestry/bookkeeping, and the final integrated production-like regression pass.
-> Remaining Tyvek, SiPM-PDE, and PDMS limitations are documented input-model
-> caveats rather than unresolved implementation failures.
+# General simulation model
 
-# Cherenkov general simulation redesign
+## Geometry and physics
 
-This version generalizes particle truth, optical-photon ancestry, readout geometry, trigger logic, and output policy while keeping large optical output compact.
+The supported topology is a cuboid radiator with optional uniform PMMA shell and Tyvek-like reflector, rectangular coupling/readout elements on six axis-aligned faces, and top/bottom trigger paddles. It is configurable within this family; arbitrary CAD geometry is not provided through macros.
 
-## Build
+The executable uses `FTFP_BERT`, replaces its electromagnetic component with `G4EmStandardPhysics_option4`, and registers `G4OpticalPhysics`. The default production cut is 0.1 mm. Cherenkov, absorption, Rayleigh and optical-boundary processing are enabled; scintillation, Mie and WLS/WLS2 are disabled. Macro commands can change optical activation states, which are recorded in `RunConfig`.
 
-```bash
-mkdir build && cd build
-cmake ..
-cmake --build . -j
-```
+Enabling a process alone does not supply calibrated emission/yield/material properties for a new scintillator or WLS system.
 
-CRY 1.7 is fetched by the existing ExternalProject rule. Optical-data and CRY-data paths are compiled as absolute paths, avoiding dependence on the current working directory.
- Git provenance is captured at CMake configure time; rerun `cmake ..` after committing or changing source files before the build you intend to archive/publish.
+## Sources
 
-## Ordinary study examples
+Gun mode configures particle, kinetic energy, position, direction, time and optical-photon polarization. It is useful for controlled samples.
 
-Start from the catalogued user examples rather than a validation macro:
+CRY mode maps CRY coordinates into the detector's Y-vertical convention and can create multiple primaries per event. Supported project time modes are `relative`, `absolute` and `zero`; default `relative` subtracts the earliest primary time in each CRY event. Many output times are single-precision nanoseconds: use relative timing for fine time differences, and assess precision before using absolute timestamps.
 
-```bash
-./cherenkov example_gun_direct_sipm.mac 1234567
-./cherenkov example_direct_sipm.mac 1234567
-./cherenkov example_concentrator_input.mac 1234567
-```
+The supplied CRY examples select muons. Other supported CRY species require corresponding configuration and validation. The magnetic-latitude helper is an approximate centered-dipole calculation with its stated date range.
 
-See `macros/README.md` for the intent of each category and which file to copy for a new study.
+## Optical inputs
 
-The optional second argument is an explicit RNG seed. Without it a high-resolution/random-device seed is generated; the actual seed is written to `RunConfig`. `RunConfig` also stores the schema version, actual thread count, RNG engine, CRY version, Geant4 version, default production cut and the activation state of all registered optical processes. From `general-v1.10` it additionally stores the Git commit, branch, dirty-tree flag, and a compact `ProjectRevision`, so a ROOT file identifies the source revision used to build the executable rather than relying on a manually edited hotfix label.
+Material profiles associate Geant4 materials with optical tables and provenance. Core supports Water_Default and PMMA_SNO_A through the public interface; OuterShell currently supports PMMA_SNO_A and Coupling PDMS_Generic.
 
-## Generator
+Tables are converted from wavelength to photon energy before attachment to Geant4. Data outside a table's numerical support use the endpoint behaviour described by the model. Numerical table support and empirical measurement validity are distinct concepts.
 
-CRY:
-```text
-/generator/mode CRY
-/CRY/timeMode relative
-... CRY input lines ...
-/CRY/update
-```
-
-Generic validation/source gun:
-```text
-/generator/mode Gun
-/generator/particle pi+
-/generator/energy 1 GeV
-/generator/position 0 60 0 mm
-/generator/direction 0 -1 0
-# Needed for primary optical-photon boundary tests:
-/generator/polarization 1 0 0
-```
-
-The gun can therefore run the same detector for muons, electrons, pions, protons, kaons, etc. without changing the output schema. The bundled CRY configuration should be limited to species supported by CRY 1.7 (muons, neutrons, protons, electrons, photons and pions); other Geant4 species are available through the generic gun.
-
-## Optical processes
-
-The executable registers Geant4 optical physics with Cerenkov ON, absorption/Rayleigh/boundary ON, Scintillation OFF and WLS OFF. Geant4's `/process/optical/processActivation` command can activate registered processes later. The photon schema already distinguishes optical creator process type/subtype and propagates non-optical source ancestry through optical chains. The actual activation state (including WLS2) is written into `RunConfig` rather than inferred from a macro filename.
-
-The schema is therefore ready for future scintillation/WLS output, but the present detector materials do **not** yet define a calibrated scintillation emission/yield model or a WLS-fibre material/geometry. Turning those processes on is not, by itself, a validated experimental model; their material property tables must be added from the actual detector/fibre data.
+The bundled historical/candidate tables are retained for comparisons. A filename in `data/` does not make it active; inspect the selected profile and dataset fields in `RunConfig`.
 
 ## Readout
 
-`/detector/sensorMode DirectSiPM` applies PDE. See `macros/example_direct_sipm.mac`.
+DirectSiPM uses an absorbing effective surface with zero configured reflectivity and a wavelength-dependent detection efficiency. This is a photon-counting response model, without full SiPM microcell/electronics behaviour.
 
-`/detector/sensorMode ConcentratorInput` records readout-entrance phase space and absorbs the virtual-aperture photon without counting a detection. The interactive `init_vis.mac` uses this mode for the current 10 x 10 mm concentrator-entrance study.
+ConcentratorInput uses a virtual absorbing entrance with zero detection efficiency. `SensorIncident` is the interface to a downstream optical study. Its directions and polarization are the incident pre-boundary state expressed in the channel's local frame. Local +z points outward; the nominal entrance plane has EntranceZ_mm=0.
 
-Readout element count is not fixed. Every face can be disabled, use an independent fixed `NU x NV` grid, or auto-fill from element size/gap/margins. `ChannelMap` stores the actual generated elements and `ReadoutPlaneConfig` stores the requested layout. See `SCHEMA.md` and `macros/example_concentrator_input.mac`.
+## Photon origin and transport
 
-For new macros, use the curated profile commands (`/detector/coreProfile`, `/detector/outerShellProfile`, `/detector/couplingProfile`) and the generic geometry commands (`/detector/readoutSize`, `/detector/outerShellThickness`, `/detector/useOuterShell`). Legacy aliases such as `/detector/coreMaterial`, `/detector/sipmSize`, and `/detector/setAcrylicThickness` remain supported for old validation macros.
+The output distinguishes immediate parent, propagated non-optical source and root primary. For example, a muon can produce a secondary electron that emits a photon. Selecting primary-muon emission differs from selecting the entire muon-initiated cascade.
 
-## Analysis
+`analyze_general.C` provides `primaryEmitter`, `emitter` and `ancestor` selections. `selectedPDG=0` selects all optical photons, including optical-primary test samples.
 
-ROOT example:
-```text
-root -l
-.L analysis/analyze_general.C+
-analyze_general("output_cerenkov_run0.root",13,true,"primaryEmitter");
-analyze_general("output_cerenkov_run0.root",11,true,"primaryEmitter");
-analyze_general("output_cerenkov_run0.root",211,false,"primaryEmitter");
-analyze_general("output_cerenkov_run0.root",-211,false,"primaryEmitter");
-# selectedPDG=0 selects all optical photons, useful for optical-primary validation:
-analyze_general("output_cerenkov_run0.root",0,true,"emitter");
-```
+`Photon.ReachedCoreWall` denotes an encounter. Optional `CoreBoundaryCrossing` denotes the first successful transmission out of Core; reflection and total internal reflection do not count. These are logical-volume boundaries. `SensorIncident` and `DetectedSignal` then distinguish readout arrival and detection.
 
-The report uses the lightweight `PrimaryTruth` tier when present so selected-primary energy/zenith distributions are not trigger-biased in `thinAll`. It also includes dE/dx, generated spectrum, Cherenkov angle and angle-vs-wavelength, transport funnel, incident spectrum/angle/aperture map, detected spectrum/timing, transport/sensor/total efficiencies, **species-selected** channel occupancies, reflection/Rayleigh summaries, trigger QA, and muon decay/Michel plots when applicable. Detected timing is plotted relative to the selected top-scintillator trigger pulse. Free-lifetime auto-fitting is intentionally restricted to an explicit `mu+` selection (`selectedPDG=-13, combineCharge=false`).
+## Analysis quantities
 
-## SNO PMMA reference
+`TrackVolume.Edep_MeV` is local energy deposition; `DeltaKE_MeV` is the accumulated kinetic-energy change of a track. Secondary transport means these need not agree. State the observable and selection when comparing stopping-power results.
 
-Exact published SNO UV-transmitting acrylic Sample-A values are retained as the empirical anchor for PMMA absorption in the 300--500 nm measured domain. The active production transport table is `PMMA_SNO_UVT_SampleA_ABS_Measured300to500_Model200to900.txt`: 300--500 nm is explicitly tagged as measured Sample-A data, while 200--300 nm and 500--900 nm are explicitly labelled transport-policy extensions rather than direct SNO measurements. `RunConfig` stores both numerical support (`*AbsValidMin/Max_nm`) and empirical validity (`*AbsMeasuredMin/Max_nm`) together with the exact dataset/profile provenance. The PMMA RINDEX uses the documented broad Cauchy approximation profile rather than pretending the limited published SNO refractive-index measurements cover the full optical transport band.
+An efficiency must specify its population and denominator: generated photons, unique photons reaching a readout, detected photons, generated events or triggered events. In thinAll/triggered, detailed optical output is conditional on the trigger. Use RunStatistics for generated-event totals, especially in triggered mode.
 
-The SNO material is a detector-grade UV-transmitting reference, not evidence that an arbitrary laboratory PMMA sheet has identical properties.
-
-## Validation macros
-
-- `validation_muon_decay.mac`: stopped mu+ proper-time / Michel-electron test.
-- `validation_dedx_muon.mac`: 3 GeV mu- dE/dx with optical production disabled.
-- `validate_physics.py`: independent table-based Cherenkov/TIR/attenuation checks.
-
-## Build-status note
-
-The simulator needs a Geant4 development installation; the supplied ROOT analysis macro additionally needs ROOT. The development container used to prepare this revision has neither a Geant4 package configuration nor `root-config`, so the code can be statically audited here but cannot be linked/run against Geant4 or ROOT here.
-
-
-## Runtime validation
-
-Follow `VALIDATION_RUNBOOK.md`. Run `validation_output_mt.mac` first; it specifically checks ROOT/Geant4 MT ntuple merging before any physics plots are interpreted.
+See [Validation](README_VALIDATION.md) for analysis caveats and [Schema](SCHEMA.md) for exact output semantics.
